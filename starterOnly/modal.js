@@ -38,11 +38,21 @@ function closeModal() {
 function validate(event) {
   event.preventDefault(); // Empêche le rechargement de la page
   // Récupérer les valeurs des champs
-  let firstname = document.getElementById("first").value;
-  let lastname = document.getElementById("last").value;
+  const firstname = document.getElementById("firstName").value;
+  let lastname = document.getElementById("lastName").value;
   let email = document.getElementById("email").value;
   let birthdate = document.getElementById("birthdate").value;
   let quantity = document.getElementById("quantity").value;
+
+  // const form = documents.getElementById("form");
+
+  const firstname_error = document.getElementById("firstName_error");
+  const lastname_error = document.getElementById("lastName_error");
+  const email_error = document.getElementById("email_error");
+  const birthdate_error = document.getElementById("birthdate_error");
+  const quantity_error = document.getElementById("quantity_error");
+  const location_error = document.getElementById("location_error");
+  const terms_error = document.getElementById("terms_error");
 
   // Définir l'expression régulière pour valider l'email
   let regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -62,30 +72,79 @@ function validate(event) {
   let notifyMe = document.getElementById("checkbox2").checked;
 
   // Validation des champs
+
   if (firstname.length < 2) {
-    throw new Error("Le prénom doit contenir au moins 2 caractères.");
+    event.preventDefault();
+    firstname_error.classList.remove("hidden");
+    firstname_error.innerHTML =
+      "Le prénom doit contenir au moins 2 caractères.";
+
+    return false;
+  } else {
+    firstname_error.classList.add("hidden");
   }
+
   if (lastname.length < 2) {
-    throw new Error("Le nom doit contenir au moins 2 caractères.");
+    event.preventDefault();
+    lastname_error.classList.remove("hidden");
+    lastname_error.innerHTML = "Le nom doit contenir au moins 2 caractères.";
+    return false;
+  } else {
+    lastname_error.classList.add("hidden");
   }
+
   if (!regexEmail.test(email)) {
-    throw new Error("Veuillez entrer une adresse email valide.");
+    event.preventDefault();
+    email_error.classList.remove("hidden");
+    email_error.innerHTML = "L'email n'est pas valide.";
+    return false;
+  } else {
+    email_error.classList.add("hidden");
   }
-  // Convertir la date de naissance en objet Date
-  if (!birthdate || new Date(birthdate) > new Date()) {
-    throw new Error("Veuillez entrer une date de naissance valide.");
+
+  if (birthdate == "") {
+    event.preventDefault();
+    birthdate_error.classList.remove("hidden");
+    birthdate_error.innerHTML = "La date de naissance est obligatoire.";
+    return false;
+  } else {
+    const today = new Date();
+    const birthDate = new Date(birthdate);
+    if (birthDate >= today) {
+      birthdate_error.classList.remove("hidden");
+      birthdate_error.innerHTML =
+        "La date de naissance doit être antérieure à la date d'aujourd'hui.";
+      return false;
+    } else {
+      birthdate_error.classList.add("hidden");
+    }
   }
-  if (quantity === "" || quantity < 0 || quantity > 99) {
-    throw new Error("Veuillez entrer un nombre valide de tournois.");
+
+  if (quantity == "") {
+    event.preventDefault();
+    quantity_error.classList.remove("hidden");
+    quantity_error.innerHTML = "Le nombre de tournois est obligatoire.";
+    return false;
+  } else {
+    quantity_error.classList.add("hidden");
   }
-  if (!location) {
-    throw new Error("Veuillez sélectionner un lieu de participation.");
+
+  //Validatin locations
+  if (location === undefined) {
+    location_error.classList.remove("hidden");
+    location_error.innerHTML = "Le lieu de participation est obligatoire.";
+    return false;
+  } else {
+    location_error.classList.add("hidden");
   }
+
   if (!termsAccepted) {
-    alert(
-      "Vous devez accepter les conditions d'utilisation pour pouvoir participer au jeu."
-    );
-    throw new Error("Vous devez accepter les conditions d'utilisation.");
+    event.preventDefault();
+    terms_error.classList.remove("hidden");
+    terms_error.innerHTML = "Veuillez accepter les conditions d'utilisation.";
+    return false;
+  } else {
+    terms_error.classList.add("hidden");
   }
 
   // Afficher les valeurs dans la console

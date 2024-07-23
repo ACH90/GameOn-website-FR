@@ -527,3 +527,18 @@ footer {
   }
 }
 
+#firstName_error,
+#lastName_error,
+#email_error,
+#terms_error,
+#birthdate_error,
+#quantity_error,
+#location_error,
+#terms_error {
+  color: red;
+  font-size: 14px;
+}
+
+.hidden {
+  display: none;
+}
