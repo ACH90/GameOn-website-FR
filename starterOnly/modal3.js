@@ -55,33 +55,71 @@ function closeModal() {
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 modalBtnClose.forEach((btn) => btn.addEventListener("click", closeModal));
 
+//Fonctions Afficher Erreur
+function showError(elementId, message) {
+  const errorElement = document.getElementById(elementId);
+  errorElement.classList.remove("hidden");
+  errorElement.innerHTML = message;
+  throw new Error(message);
+}
+
+//Fonctions Cacher Erreur
+function hideError(elementId) {
+  const errorElement = document.getElementById(elementId);
+  errorElement.classList.add("hidden");
+}
+
+//Fonction de validation globale des elements du formulaire -- Cacher ou afficher les erreurs
+function hideOrShowError(validation, elementId, messageError) {
+  if (!validation) {
+    showError(elementId, messageError);
+  } else {
+    hideError(elementId);
+  }
+}
+
+//Fonction CharactereNumberMin
+function charactereNumberMin(elementId, min, errorMessage) {
+  const element = document.getElementById(elementId); // Récupérer l'élément par son ID
+  const element_error = document.getElementById(elementId + "_error"); // Récupérer l'élément d'erreur correspondant
+
+  if (element.value.length < min) {
+    element_error.classList.remove("hidden");
+    element_error.innerHTML =
+      "Le prénom doit contenir au moins " + min + " caractères.";
+    throw new Error(errorMessage);
+  } else {
+    element_error.classList.add("hidden");
+  }
+}
+
 //Fonctions de validation du formulaire
 
+// function validateFirstname(firstname) {
+//   const firstname_error = document.getElementById("firstName_error");
+//   if (firstname.length < 2) {
+//     firstname_error.classList.remove("hidden");
+//     firstname_error.innerHTML =
+//       "Le prénom doit contenir au moins 2 caractères.";
+//     throw new Error("Le prénom doit contenir au moins 2 caractères.");
+//   } else {
+//     firstname_error.classList.add("hidden");
+//   }
+// }
+
 function validateFirstname(firstname) {
-  const firstname_error = document.getElementById("firstName_error");
-  if (firstname.length < 2) {
-    firstname_error.classList.remove("hidden");
-    firstname_error.innerHTML =
-      "Le prénom doit contenir au moins 2 caractères.";
-    throw new Error("Le prénom doit contenir au moins 2 caractères.");
-  } else {
-    firstname_error.classList.add("hidden");
-  }
+  hideOrShowError(firstname, "firstName_error", "Le prénom est obligatoire.");
+  charactereNumberMin("firstName", 2);
 }
 
 function validateLastname(lastname) {
-  const lastname_error = document.getElementById("lastName_error");
-  if (lastname.length < 2) {
-    lastname_error.classList.remove("hidden");
-    lastname_error.innerHTML = "Le nom doit contenir au moins 2 caractères.";
-    throw new Error("Le nom doit contenir au moins 2 caractères.");
-  } else {
-    lastname_error.classList.add("hidden");
-  }
+  hideOrShowError(lastname, "lastName_error", "Le nom est obligatoire.");
+  charactereNumberMin("lastName", 2);
 }
 
 function validateEmail(email) {
-  const email_error = document.getElementById("email_error");
+  hideOrShowError(email, "email_error", "L'email est obligatoire.");
+
   if (!regexEmail.test(email)) {
     email_error.classList.remove("hidden");
     email_error.innerHTML = "L'email n'est pas valide.";
@@ -92,58 +130,60 @@ function validateEmail(email) {
 }
 
 function validateBirthdate(birthdate) {
-  const birthdate_error = document.getElementById("birthdate_error");
-  if (!birthdate) {
+  hideOrShowError(
+    birthdate,
+    "birthdate_error",
+    "La date de naissance est obligatoire."
+  );
+
+  const today = new Date();
+  const birthDate = new Date(birthdate);
+
+  if (birthDate >= today) {
     birthdate_error.classList.remove("hidden");
-    birthdate_error.innerHTML = "La date de naissance est obligatoire.";
-    throw new Error("La date de naissance est obligatoire.");
+    birthdate_error.innerHTML =
+      "La date de naissance doit être antérieure à la date d'aujourd'hui.";
+    throw new Error(
+      "La date de naissance doit être antérieure à la date d'aujourd'hui."
+    );
   } else {
-    const today = new Date();
-    const birthDate = new Date(birthdate);
-    if (birthDate >= today) {
-      birthdate_error.classList.remove("hidden");
-      birthdate_error.innerHTML =
-        "La date de naissance doit être antérieure à la date d'aujourd'hui.";
-      throw new Error(
-        "La date de naissance doit être antérieure à la date d'aujourd'hui."
-      );
-    } else {
-      birthdate_error.classList.add("hidden");
-    }
+    birthdate_error.classList.add("hidden");
   }
 }
 
+// function validateQuantity(quantity) {
+//   const quantity_error = document.getElementById("quantity_error");
+//   if (quantity === "") {
+//     quantity_error.classList.remove("hidden");
+//     quantity_error.innerHTML = "Le nombre de tournois est obligatoire.";
+//     throw new Error("Le nombre de tournois est obligatoire.");
+//   } else {
+//     quantity_error.classList.add("hidden");
+//   }
+// }
+
 function validateQuantity(quantity) {
-  const quantity_error = document.getElementById("quantity_error");
-  if (quantity === "") {
-    quantity_error.classList.remove("hidden");
-    quantity_error.innerHTML = "Le nombre de tournois est obligatoire.";
-    throw new Error("Le nombre de tournois est obligatoire.");
-  } else {
-    quantity_error.classList.add("hidden");
-  }
+  hideOrShowError(
+    quantity,
+    "quantity_error",
+    "Le nombre de tournois est obligatoire."
+  );
 }
 
 function validateLocation(location) {
-  const location_error = document.getElementById("location_error");
-  if (!location) {
-    location_error.classList.remove("hidden");
-    location_error.innerHTML = "Le lieu de participation est obligatoire.";
-    throw new Error("Le lieu de participation est obligatoire.");
-  } else {
-    location_error.classList.add("hidden");
-  }
+  hideOrShowError(
+    location,
+    "location_error",
+    "Le lieu de participation est obligatoire."
+  );
 }
 
 function validateTerms(termsAccepted) {
-  const terms_error = document.getElementById("terms_error");
-  if (!termsAccepted) {
-    terms_error.classList.remove("hidden");
-    terms_error.innerHTML = "Veuillez accepter les conditions d'utilisation.";
-    throw new Error("Veuillez accepter les conditions d'utilisation.");
-  } else {
-    terms_error.classList.add("hidden");
-  }
+  hideOrShowError(
+    termsAccepted,
+    "terms_error",
+    "Veuillez accepter les conditions d'utilisation."
+  );
 }
 
 // Afficher les valeurs dans la console
@@ -179,3 +219,12 @@ function validate(event) {
     console.error(error.message);
   }
 }
+
+//    function validateQuantity(quantity) {
+//     const elementId = "quantity_error";
+//     if (!quantity) {
+//      showError(elementId, "Le nombre de tournois est obligatoire.");
+//     } else {
+//      hideError(elementId);
+//     }
+//    }
