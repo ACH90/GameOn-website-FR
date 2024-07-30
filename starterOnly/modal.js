@@ -13,10 +13,6 @@ const modalbg = document.querySelector(".bground"); //Modale Formulaire
 const modalBtn = document.querySelectorAll(".modal-btn"); //Bouton "Je m'inscris"
 const modalBtnClose = document.querySelectorAll(".close"); //Bouton "Fermer"
 
-// Écouter les événements de lancement et de fermeture de la modal
-modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
-modalBtnClose.forEach((btn) => btn.addEventListener("click", closeModal));
-
 // Fonction pour lancer la modal
 function launchModal() {
   modalbg.style.display = "block";
@@ -27,12 +23,9 @@ function closeModal() {
   modalbg.style.display = "none";
 }
 
-// Fermer la modal en cliquant en dehors de celle-ci
-// window.onclick = function (event) {
-//   if (event.target == modalbg) {
-//     modalbg.style.display = "none";
-//   }
-// };
+// Écouter les événements de lancement et de fermeture de la modal
+modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
+modalBtnClose.forEach((btn) => btn.addEventListener("click", closeModal));
 
 // Fonction de validation du formulaire
 function validate(event) {
@@ -43,8 +36,6 @@ function validate(event) {
   let email = document.getElementById("email").value;
   let birthdate = document.getElementById("birthdate").value;
   let quantity = document.getElementById("quantity").value;
-
-  // const form = documents.getElementById("form");
 
   const firstname_error = document.getElementById("firstName_error");
   const lastname_error = document.getElementById("lastName_error");
