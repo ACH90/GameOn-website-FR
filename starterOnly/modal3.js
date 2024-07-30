@@ -95,18 +95,6 @@ function charactereNumberMin(elementId, min, errorMessage) {
 
 //Fonctions de validation du formulaire
 
-// function validateFirstname(firstname) {
-//   const firstname_error = document.getElementById("firstName_error");
-//   if (firstname.length < 2) {
-//     firstname_error.classList.remove("hidden");
-//     firstname_error.innerHTML =
-//       "Le prénom doit contenir au moins 2 caractères.";
-//     throw new Error("Le prénom doit contenir au moins 2 caractères.");
-//   } else {
-//     firstname_error.classList.add("hidden");
-//   }
-// }
-
 function validateFirstname(firstname) {
   hideOrShowError(firstname, "firstName_error", "Le prénom est obligatoire.");
   charactereNumberMin("firstName", 2);
@@ -150,17 +138,6 @@ function validateBirthdate(birthdate) {
     birthdate_error.classList.add("hidden");
   }
 }
-
-// function validateQuantity(quantity) {
-//   const quantity_error = document.getElementById("quantity_error");
-//   if (quantity === "") {
-//     quantity_error.classList.remove("hidden");
-//     quantity_error.innerHTML = "Le nombre de tournois est obligatoire.";
-//     throw new Error("Le nombre de tournois est obligatoire.");
-//   } else {
-//     quantity_error.classList.add("hidden");
-//   }
-// }
 
 function validateQuantity(quantity) {
   hideOrShowError(
@@ -219,12 +196,3 @@ function validate(event) {
     console.error(error.message);
   }
 }
-
-//    function validateQuantity(quantity) {
-//     const elementId = "quantity_error";
-//     if (!quantity) {
-//      showError(elementId, "Le nombre de tournois est obligatoire.");
-//     } else {
-//      hideError(elementId);
-//     }
-//    }
