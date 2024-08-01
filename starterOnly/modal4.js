@@ -87,6 +87,27 @@ function charactereNumberMin(element, elementId, min, messageError) {
   }
 }
 
+//Fonction ValidationRegex
+function validationRegex(email, elementId, regex, messageError) {
+  if (!regex.test(email)) {
+    showError(elementId, messageError);
+  } else {
+    hideError(elementId);
+  }
+}
+
+//Fonction AnteriorOrPosterior
+function anteriorOrPosteriorDate(birthdate, elementId, messageError) {
+  const today = new Date();
+  const birthDate = new Date(birthdate);
+
+  if (birthDate >= today) {
+    showError(elementId, messageError);
+  } else {
+    hideError(elementId);
+  }
+}
+
 //Fonctions de validation du formulaire
 
 function validateFirstname(firstname) {
@@ -111,14 +132,12 @@ function validateLastname(lastname) {
 
 function validateEmail(email) {
   hideOrShowError(email, "email_error", "L'email est obligatoire.");
-
-  if (!regexEmail.test(email)) {
-    email_error.classList.remove("hidden");
-    email_error.innerHTML = "L'email n'est pas valide.";
-    throw new Error("L'email n'est pas valide.");
-  } else {
-    email_error.classList.add("hidden");
-  }
+  validationRegex(
+    email,
+    "email_error",
+    regexEmail,
+    "L'email n'est pas valide."
+  );
 }
 
 function validateBirthdate(birthdate) {
@@ -128,19 +147,11 @@ function validateBirthdate(birthdate) {
     "La date de naissance est obligatoire."
   );
 
-  const today = new Date();
-  const birthDate = new Date(birthdate);
-
-  if (birthDate >= today) {
-    birthdate_error.classList.remove("hidden");
-    birthdate_error.innerHTML =
-      "La date de naissance doit être antérieure à la date d'aujourd'hui.";
-    throw new Error(
-      "La date de naissance doit être antérieure à la date d'aujourd'hui."
-    );
-  } else {
-    birthdate_error.classList.add("hidden");
-  }
+  anteriorOrPosteriorDate(
+    birthdate,
+    "birthdate_error",
+    "La date doit étre antérieure à la date d'aujourd'hui."
+  );
 }
 
 function validateQuantity(quantity) {
